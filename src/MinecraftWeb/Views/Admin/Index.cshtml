@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "SGS - Minecraft";
+}
+<head>
+    <link rel="stylesheet" type="text/css" href="~/css/TerminalStyle.css" media="screen" title="Default" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/html" src="~/js/jquery.hotkeys-0.7.9.js">
+    </script>
+    <script type="text/html" src="~/js/jquery.browser.js">
+    </script>
+    <script type="text/html" src="~/js/jquery.konami.js">
+    </script>
+    <script type="text/javascript" src="~/js/terminal.js"></script>
+</head>
+<div class="jumbotron">
+    <center>
+        <h1>Simplified Gaming Solutions</h1>
+        <div id="serverInfo">
+            <p><b>Name:</b> n/a</p>
+            <p><b>Address:</b> simplifiedgamingsolutions.com</p>
+            <p><b>Status:</b> <font color="red"> Offline </font></p>
+            <p><b>Players:</b> n/a</p>
+        </div>
+        <div id="screen">
+            <div id="display">
+                <div id="welcome">
+                    <h1>unixkcd</h1>
+                    <h2>A webcomic of romance, sarcasm, math, and language.</h2>
+                </div>
+                <noscript>
+                    <p>Sorry, the CLI requires JavaScript to work. Please turn on JavaScript, or try the <a href="/1/">GUI Interface</a>.</p>
+                </noscript>
+            </div>
+            <div id="bottomline">
+                <span id="inputline"><span id="prompt"></span><span id="lcommand"></span><span id="cursor">&nbsp;</span><span id="rcommand"></span></span><span id="spinner"></span>
+            </div>
+        </div>
+        <p>
+            <a class="btn btn-default" id="start">Start Server</a>
+            <a class="btn btn-default" id="stop">Stop Server</a>
+        </p>
+        <img align="middle" title="" src="~/images/SideImage.jpg" style="width:100%;height:100%;border-radius:2%" border="0" />
+    </center>
+</div>
+
+<font color="white">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Play with your friends</h2>
+            <p>Start your own server with the click of a button. Requires no set up, download and start playing today!</p>
+            <p><a class="btn btn-default" href="~/MinecraftProductInfo#1">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>You have the Power</h2>
+            <p>As the owner of your server you have the power. Give or take items from your friends, rule your world the way you want!</p>
+            <p><a class="btn btn-default" href="~/MinecraftProductInfo#2">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Control your Mods</h2>
+            <p>Drag and drop your favorite mods into your world.</p>
+            <p><a class="btn btn-default" href="~/MinecraftProductInfo#3">Learn more &raquo;</a></p>
+        </div>
+    </div>
+</font>
+
+<script type="text/javascript">
+        var timer;
+        if (jQuery.hotkeys === undefined)
+            alert("missing Hotkeys library");
+        $(document).ready(function () {
+            $('#start').click(function (e) {
+                e.preventDefault();
+                $.post('Admin/start', null, function () {
+                    alert("Server Started");
+                });//end of post
+            });//end of click
+            $('#stop').click(function (e) {
+                e.preventDefault();
+                $.post('Admin/stop', null, function () {
+                    window.clearInterval(timer);
+                    alert("Server Stopped");
+                });//end of post
+            });//end of click
+            timer = window.setInterval(function setConsoleText() {
+                $.get('Admin/getConsoleText', null,
+                    function (data) {
+                        document.getElementById("consoleTextArea").innerHTML = data;
+                    });
+                $.get('Admin/getServerInfo', null,
+                    function (data) {
+                        document.getElementById("serverInfo").innerHTML = data;
+                    });
+            }, 1000);
+        });//end of ready
+
+</script>
+}

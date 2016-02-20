@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+<p>Use this area to provide additional information.</p>
+<script>
+    var myVar = window.setInterval(myTimer, 1000);
+    function myTimer() {
+        var d = new Date();
+        ViewData["Message"] = d.toLocaleTimeString();
+    }
+</script>
