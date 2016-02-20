@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Microsoft.AspNet.Authorization;
 using System.Threading.Tasks;
 using System.Text;
+using System.IO;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -44,6 +45,7 @@ namespace MinecraftWeb.Controllers
             }
         }
 
+        [HttpPost]
         public void stop()
         {
             if(process != null)
@@ -51,6 +53,13 @@ namespace MinecraftWeb.Controllers
                 process.Close();
                 process = null;
             }
+        }
+
+        [HttpPost]
+        public void sendCommand([FromBody]dynamic command)
+        {
+            if(process != null || !process.HasExited)
+                process.StandardInput.WriteLine(command);
         }
 
         private void Process_Exited(object sender, EventArgs e)

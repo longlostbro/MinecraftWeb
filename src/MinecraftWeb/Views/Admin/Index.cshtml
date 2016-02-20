@@ -37,8 +37,8 @@
             <p><b>Status:</b> <font color="red"> Offline </font></p>
             <p><b>Players:</b> n/a</p>
         </div>
+        <h1>Server Console</h1>
         <div id="screen">
-            <h1>Server Console</h1>
             <div id="consoleContent">
             </div>
             <div id="bottomline">
@@ -79,7 +79,6 @@
             $('#start').click(function (e) {
                 e.preventDefault();
                 $.post('Admin/start', null, function () {
-                    alert("Server Started");
                 });//end of post
             });//end of click
             $('#stop').click(function (e) {
@@ -96,15 +95,32 @@
                         $("#lcommand").append(""+char);
                     }
                     else {
-                        //send command
+                        var commandText = $("#lcommand").text();
+                        $.ajax({
+                            type: 'POST',
+                            url: "Admin/sendCommand",
+                            data: JSON.stringify(commandText),
+                            dataType: "text",
+                            contentType: "application/json; charset=utf-8",
+                            processData: false
+                        });
+                        var d = $('#consoleContent');
+                        d.scrollTop(d.prop("scrollHeight"));
+                        $("#lcommand").text("");
                     }
                 }
             );
             timer = window.setInterval(function setConsoleText() {
                 $.get('Admin/getConsoleText', null,
                     function (data) {
-                        if (document.getElementById("consoleContent").innerHTML != data)
+                        var d = $('#consoleContent');
+                        var bottom = d.scrollTop() >= d.prop("scrollHeight") - $('#screen').height();
+                        if (document.getElementById("consoleContent").innerHTML != data) {
                             document.getElementById("consoleContent").innerHTML = data;
+                        }
+                        if (bottom) {
+                            d.scrollTop(d.prop("scrollHeight"));
+                        }
                     });
                 $.get('Admin/getServerInfo', null,
                     function (data) {
