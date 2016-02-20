@@ -61,7 +61,7 @@ namespace MinecraftWeb.Controllers
         private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             if(e.Data != null)
-                consoleText += e.Data + "\r\n";
+                consoleText += "<p>"+e.Data + "</p>";
         }
 
         [HttpGet]

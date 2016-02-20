@@ -2,37 +2,47 @@
     ViewBag.Title = "SGS - Minecraft";
 }
 <head>
-    <link rel="stylesheet" type="text/css" href="~/css/TerminalStyle.css" media="screen" title="Default" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script type="text/html" src="~/js/jquery.hotkeys-0.7.9.js">
-    </script>
-    <script type="text/html" src="~/js/jquery.browser.js">
-    </script>
-    <script type="text/html" src="~/js/jquery.konami.js">
-    </script>
-    <script type="text/javascript" src="~/js/terminal.js"></script>
+    <style type="text/css">
+        div#screen p, div#consoleContent, ul {
+            margin: 0;
+        }
+        #consoleContent{
+            text-align:left;
+            overflow-y:scroll;
+            height: 500px;
+            border-top: solid;
+            border-right: solid;
+            border-left: solid;
+            background-color:black;
+            color: darkgrey;
+        }
+        #bottomline{
+            text-align:left;
+            border-top: solid;
+            border-bottom: solid;
+            border-right: solid;
+            border-left: solid;
+            background-color:black;
+            color: darkgrey;
+        }
+    </style>
 </head>
-<div class="jumbotron">
+<div>
     <center>
         <h1>Simplified Gaming Solutions</h1>
-        <div id="serverInfo">
+        <div class="jumbotron" id="serverInfo">
             <p><b>Name:</b> n/a</p>
             <p><b>Address:</b> simplifiedgamingsolutions.com</p>
             <p><b>Status:</b> <font color="red"> Offline </font></p>
             <p><b>Players:</b> n/a</p>
         </div>
         <div id="screen">
-            <div id="display">
-                <div id="welcome">
-                    <h1>unixkcd</h1>
-                    <h2>A webcomic of romance, sarcasm, math, and language.</h2>
-                </div>
-                <noscript>
-                    <p>Sorry, the CLI requires JavaScript to work. Please turn on JavaScript, or try the <a href="/1/">GUI Interface</a>.</p>
-                </noscript>
+            <h1>Server Console</h1>
+            <div id="consoleContent">
             </div>
             <div id="bottomline">
-                <span id="inputline"><span id="prompt"></span><span id="lcommand"></span><span id="cursor">&nbsp;</span><span id="rcommand"></span></span><span id="spinner"></span>
+                <span id="inputline"><b>cmd></b></span><span id="lcommand"></span><span id="cursor">&nbsp;</span><span id="rcommand"></span></span><span id="spinner"></span>
             </div>
         </div>
         <p>
@@ -62,11 +72,9 @@
         </div>
     </div>
 </font>
-
 <script type="text/javascript">
-        var timer;
-        if (jQuery.hotkeys === undefined)
-            alert("missing Hotkeys library");
+    var timer;
+    var color = "white";
         $(document).ready(function () {
             $('#start').click(function (e) {
                 e.preventDefault();
@@ -81,15 +89,31 @@
                     alert("Server Stopped");
                 });//end of post
             });//end of click
+            $(document).keypress( function (e) {
+                    if (e.which != 13) {
+                        var char = String.fromCharCode(e.which),
+                            isUpper = char == char.toUpperCase();
+                        $("#lcommand").append(""+char);
+                    }
+                    else {
+                        //send command
+                    }
+                }
+            );
             timer = window.setInterval(function setConsoleText() {
                 $.get('Admin/getConsoleText', null,
                     function (data) {
-                        document.getElementById("consoleTextArea").innerHTML = data;
+                        if (document.getElementById("consoleContent").innerHTML != data)
+                            document.getElementById("consoleContent").innerHTML = data;
                     });
                 $.get('Admin/getServerInfo', null,
                     function (data) {
                         document.getElementById("serverInfo").innerHTML = data;
                     });
+                if ($("#cursor").css("background-color") == "rgb(255, 255, 255)")
+                    $("#cursor").css("background-color", "black");
+                else
+                    $("#cursor").css("background-color", "rgb(255, 255, 255)");
             }, 1000);
         });//end of ready
 
