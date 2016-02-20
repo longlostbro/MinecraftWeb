@@ -7,8 +7,6 @@
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.4",
     "Microsoft.jQuery.Unobtrusive.Ajax": "~3.2.3",
-    "jquery-ui": "1.11.4",
-    "jquery.browser": "~0.1.0",
-    "konami.js": "~1.0.1"
+    "jquery-ui": "1.11.4"
   }
 }

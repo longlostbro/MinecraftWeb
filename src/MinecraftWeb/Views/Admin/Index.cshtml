@@ -73,7 +73,6 @@
     </div>
 </font>
 <script type="text/javascript">
-    var timer;
     var color = "white";
         $(document).ready(function () {
             $('#start').click(function (e) {
@@ -85,7 +84,6 @@
                 e.preventDefault();
                 $.post('Admin/stop', null, function () {
                     window.clearInterval(timer);
-                    alert("Server Stopped");
                 });//end of post
             });//end of click
             $(document).keypress( function (e) {
@@ -110,7 +108,7 @@
                     }
                 }
             );
-            timer = window.setInterval(function setConsoleText() {
+            var timer = setInterval(function() {
                 $.get('Admin/getConsoleText', null,
                     function (data) {
                         var d = $('#consoleContent');
@@ -126,11 +124,19 @@
                     function (data) {
                         document.getElementById("serverInfo").innerHTML = data;
                     });
+            }, 1000);
+            var timer2 = setInterval(function () {
+                $.get('Admin/getServerInfo', null,
+                    function (data) {
+                        document.getElementById("serverInfo").innerHTML = data;
+                    });
+            }, 10000);
+            var timer3 = setInterval(function () {
                 if ($("#cursor").css("background-color") == "rgb(255, 255, 255)")
                     $("#cursor").css("background-color", "black");
                 else
                     $("#cursor").css("background-color", "rgb(255, 255, 255)");
-            }, 1000);
+            }, 500);
         });//end of ready
 
 </script>

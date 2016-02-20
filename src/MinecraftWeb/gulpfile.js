@@ -7,16 +7,6 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify");
 
-var jquery = require('gulp-jquery');
-gulp.task('jquery', function () {
-    return jquery.src({
-        release: 2, //jQuery 2 
-        flags: ['-deprecated', '-event/alias', '-ajax/script', '-ajax/jsonp', '-exports/global']
-    })
-	.pipe(gulp.dest('./public/vendor/'));
-    // creates ./public/vendor/jquery.custom.js 
-});
-
 var paths = {
     webroot: "./wwwroot/"
 };
