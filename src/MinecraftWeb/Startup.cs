@@ -11,11 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MinecraftWeb.Models;
 using MinecraftWeb.Services;
+using MinecraftWeb.Controllers;
 
 namespace MinecraftWeb
 {
     public class Startup
     {
+        ILoggerFactory logger;
         public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
@@ -28,9 +30,16 @@ namespace MinecraftWeb
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
             }
-
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+        }
+        private void OnShutdown()
+        {
+            if(AdminController.process != null)
+            {
+                AdminController.process.Close();
+                logger.CreateLogger("Shutdown").LogError("Minecraft Server Stopped");
+            }
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -56,8 +65,10 @@ namespace MinecraftWeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)
         {
+            logger = loggerFactory;
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 

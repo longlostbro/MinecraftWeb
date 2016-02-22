@@ -13,7 +13,7 @@ namespace MinecraftWeb.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        private static Process process;
+        public static Process process;
         private static string consoleText = "";
         // GET: /<controller>/
 
