@@ -16,6 +16,7 @@ namespace MinecraftWeb.Controllers
         private static Process process;
         private static string consoleText = "";
         // GET: /<controller>/
+
         public IActionResult Index()
         {
             return View();

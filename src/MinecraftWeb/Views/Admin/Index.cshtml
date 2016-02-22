@@ -122,7 +122,8 @@
                     });
                 $.get('Admin/getServerInfo', null,
                     function (data) {
-                        document.getElementById("serverInfo").innerHTML = data;
+                        if (document.getElementById("serverInfo").innerHTML != data)
+                            document.getElementById("serverInfo").innerHTML = data;
                     });
             }, 1000);
             var timer2 = setInterval(function () {
