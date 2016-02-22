@@ -51,7 +51,8 @@ namespace MinecraftWeb.Controllers
         {
             if(process != null)
             {
-                process.Close();
+                process.StandardInput.WriteLine("stop");
+                process.WaitForExit();
                 process = null;
             }
         }

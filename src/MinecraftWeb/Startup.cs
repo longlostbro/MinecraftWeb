@@ -37,7 +37,8 @@ namespace MinecraftWeb
         {
             if(AdminController.process != null)
             {
-                AdminController.process.Close();
+                AdminController.process.StandardInput.WriteLine("stop");
+                AdminController.process.WaitForExit();
                 logger.CreateLogger("Shutdown").LogError("Minecraft Server Stopped");
             }
         }
